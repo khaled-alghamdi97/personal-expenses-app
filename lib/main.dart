@@ -45,7 +45,42 @@ class _MyAppState extends State<MyApp> {
               child: Column(
                 children: transactions
                     .map((transaction) => Card(
-                          child: Text(transaction.title),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                  width: 60,
+                                  child: Text(
+                                    "${transaction.amount}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.purple,
+                                        fontSize: 10),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.purple, width: 3)),
+                                  padding: EdgeInsets.all(10)),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    transaction.title,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "${transaction.date}",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ))
                     .toList(),
               ),
