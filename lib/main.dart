@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/src/material/colors.dart';
 import 'package:personal_Expenses/widgets/chart.dart';
 
@@ -11,6 +12,10 @@ import 'package:personal_Expenses/widgets/transaction-list.dart';
 import 'models/transaction.dart';
 
 void main() {
+  /*WidgetsFlutterBinding.ensureInitialized();    
+
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);*/
   runApp(MyApp());
 }
 
@@ -50,15 +55,22 @@ class _MyHomePageState extends State<MyHomePage> {
     //     id: "t2", title: "super market", amount: 60.50, date: DateTime.now())
   ];
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime datePicked) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: datePicked,
         id: DateTime.now().toString());
 
     setState(() {
       _userTransactions.add(newTx);
+    });
+  }
+
+  void _deletTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
     });
   }
 
@@ -80,22 +92,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(title: Text("My Personal Expenses"), actions: [
+      IconButton(
+          onPressed: () => _startAddNewTransactions(context),
+          icon: Icon(Icons.add))
+    ]);
     return Scaffold(
-      appBar: AppBar(title: Text("My Personal Expenses"), actions: [
-        IconButton(
-            onPressed: () => _startAddNewTransactions(context),
-            icon: Icon(Icons.add))
-      ]),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Chart(
-              recivedTransaction: _derivedTransactions,
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(
+                recivedTransaction: _derivedTransactions,
+              ),
             ),
-            TransactionList(
-              transactions: _userTransactions,
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.6,
+              child: TransactionList(
+                transactions: _userTransactions,
+                deleteTx: _deletTransaction,
+              ),
             )
           ],
         ),
