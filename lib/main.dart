@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(title: Text("My Personal Expenses"), actions: [
+    final appBar = AppBar(title: Text("expenses"), actions: [
       IconButton(
           onPressed: () => _startAddNewTransactions(context),
           icon: Icon(Icons.add))
